@@ -1,0 +1,12 @@
+.box-icon {
+    width:60%;
+    height:60%;
+    position:relative;
+    top:5px;
+    right:1px;
+}
+
+.brand-logo {
+    position:relative;
+    left:10px;
+}
