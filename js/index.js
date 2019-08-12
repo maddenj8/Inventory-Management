@@ -58,18 +58,41 @@ app.controller('itemController', ['$routeParams', function($routeParams) {
     this.id = $routeParams.id
 }])
 
-app.directive('img-upload', function($http, $compile) {
+app.directive('imgUpload', function($http, $compile) {
     return {
-        restrict: 'AE', 
+        restrict:'AE', 
         scope: {
-            url:'@', 
-            method:'@'
+            url: '@',
+            method: '@'
         },
+        templateUrl:'/templates/imgupload.html',
+        // template: '<input class="fileUpload" type="file" multiple />'+
+        //     '<div class="dropzone">'+
+        //         '<p class="msg">Click or Drag and Drop files to upload</p>'+
+        //     '</div>'+
+        //     '<div class="preview clearfix">'+
+        //         '<div class="previewData clearfix" ng-repeat="data in previewData track by $index">'+
+        //             '<img src={{data.src}}></img>'+
+        //             '<div class="previewDetails">'+
+        //                 '<div class="detail"><b>Name : </b>{{data.name}}</div>'+
+        //                 '<div class="detail"><b>Type : </b>{{data.type}}</div>'+
+        //                 '<div class="detail"><b>Size : </b> {{data.size}}</div>'+
+        //             '</div>'+
+        //             '<div class="previewControls">'+
+        //                 '<span ng-click="upload(data)" class="circle upload">'+
+        //                     '<i class="fa fa-check"></i>'+
+        //                 '</span>'+
+        //                 '<span ng-click="remove(data)" class="circle remove">'+
+        //                     '<i class="fa fa-close"></i>'+
+        //                 '</span>'+
+        //             '</div>'+
+        //         '</div>'+	
+        //     '</div>',
         link: function(scope, elem, attrs) {
-            var formData = new FormData()
-            scope.previewData = [] // list of images uploaded
+            var formData = new FormData();
+            scope.previewData = [];	
 
-            function previewData (file) {
+            function previewFile(file){
                 var reader = new FileReader();
                 var obj = new FormData().append('file',file);			
                 reader.onload=function(data){
@@ -83,13 +106,22 @@ app.directive('img-upload', function($http, $compile) {
                 }
                 reader.readAsDataURL(file);
             }
+
+            function getElement(className) {
+                for (var i = 0; i < elem[0].childNodes.length; i++) {
+                    if (elem[0].childNodes[i].className == className) {
+                        return elem[0].childNodes[i]
+                    }
+                }
+            }
+
             function uploadFile(e,type){
                 e.preventDefault();			
                 var files = "";
                 if(type == "formControl"){
                     files = e.target.files;
                 } else if(type === "drop"){
-                    files = e.originalEvent.dataTransfer.files;
+                    files = e.dataTransfer.files;
                 }			
                 for(var i=0;i<files.length;i++){
                     var file = files[i];
@@ -99,23 +131,23 @@ app.directive('img-upload', function($http, $compile) {
                         alert(file.name + " is not supported");
                     }
                 }
-            }
-            elem.find('.fileUpload').bind('change',function(e){
+            }	
+            getElement('fileUpload').onchange = function(e) {
                 uploadFile(e,'formControl');
-            });
+            };
 
-            elem.find('.dropzone').bind("click",function(e){
-                $compile(elem.find('.fileUpload'))(scope).trigger('click');
-                // console.log('element was clicked')
-            });
+            getElement('dropzone').onclick = function(e) {
+                getElement('fileUpload').click();
+            };
 
-            elem.find('.dropzone').bind("dragover",function(e){
+            getElement('dropzone').ondragover = function(e) {
                 e.preventDefault();
-            });
+            };
 
-            elem.find('.dropzone').bind("drop",function(e){
+            getElement('dropzone').ondrop = function(e) {
+                console.log('drop event: ' + e.dataTransfer)
                 uploadFile(e,'drop');																		
-            });
+            };
             scope.upload=function(obj){
                 $http({method:scope.method,url:scope.url,data: obj.data,
                     headers: {'Content-Type': undefined},transformRequest: angular.identity
@@ -127,7 +159,7 @@ app.directive('img-upload', function($http, $compile) {
             scope.remove=function(data){
                 var index= scope.previewData.indexOf(data);
                 scope.previewData.splice(index,1);
-            }	
+            }
         }
     }
 })
