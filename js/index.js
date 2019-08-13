@@ -20,7 +20,6 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 
 app.controller('viewController', function($scope) {
     $scope.$on('$viewContentLoaded', function(event) {
-        console.log('something is loaded')
         M.AutoInit()
         fill_todays_date()
     })
@@ -54,9 +53,14 @@ app.controller('boxController', function($scope) {
 })
 
 // -------- FUNCTIONS FOR ITEMS ----------- //
-app.controller('itemController', ['$routeParams', function($routeParams) {
+app.controller('itemController', function($scope, $routeParams) {
     this.id = $routeParams.id
-}])
+    $scope.previewData = []
+    $scope.has_images = function() {
+        console.log($scope.previewData)
+        return true
+    }
+})
 
 app.directive('imgUpload', function($http, $compile) {
     return {
@@ -66,28 +70,6 @@ app.directive('imgUpload', function($http, $compile) {
             method: '@'
         },
         templateUrl:'/templates/imgupload.html',
-        // template: '<input class="fileUpload" type="file" multiple />'+
-        //     '<div class="dropzone">'+
-        //         '<p class="msg">Click or Drag and Drop files to upload</p>'+
-        //     '</div>'+
-        //     '<div class="preview clearfix">'+
-        //         '<div class="previewData clearfix" ng-repeat="data in previewData track by $index">'+
-        //             '<img src={{data.src}}></img>'+
-        //             '<div class="previewDetails">'+
-        //                 '<div class="detail"><b>Name : </b>{{data.name}}</div>'+
-        //                 '<div class="detail"><b>Type : </b>{{data.type}}</div>'+
-        //                 '<div class="detail"><b>Size : </b> {{data.size}}</div>'+
-        //             '</div>'+
-        //             '<div class="previewControls">'+
-        //                 '<span ng-click="upload(data)" class="circle upload">'+
-        //                     '<i class="fa fa-check"></i>'+
-        //                 '</span>'+
-        //                 '<span ng-click="remove(data)" class="circle remove">'+
-        //                     '<i class="fa fa-close"></i>'+
-        //                 '</span>'+
-        //             '</div>'+
-        //         '</div>'+	
-        //     '</div>',
         link: function(scope, elem, attrs) {
             var formData = new FormData();
             scope.previewData = [];	
@@ -151,9 +133,7 @@ app.directive('imgUpload', function($http, $compile) {
             scope.upload=function(obj){
                 $http({method:scope.method,url:scope.url,data: obj.data,
                     headers: {'Content-Type': undefined},transformRequest: angular.identity
-                }).success(function(data){
-
-                });
+                })
             }
 
             scope.remove=function(data){
@@ -165,11 +145,14 @@ app.directive('imgUpload', function($http, $compile) {
 })
 
 function fill_todays_date() {
-    var todays_date = new Date()
-    var dd = String(todays_date.getDate()).padStart(2, '0')
-    var mm = String(todays_date.getMonth() + 1).padStart(2, '0')
-    var yyyy = todays_date.getFullYear()
-    var today = yyyy + '-' + mm + '-' + dd
-    console.log(today)
-    document.querySelector('#date_created').value = today
+    var date_selector = document.querySelector('#date_created')
+    if (date_selector) {
+        var todays_date = new Date()
+        var dd = String(todays_date.getDate()).padStart(2, '0')
+        var mm = String(todays_date.getMonth() + 1).padStart(2, '0')
+        var yyyy = todays_date.getFullYear()
+        var today = yyyy + '-' + mm + '-' + dd
+        console.log(today)
+        date_selector.value = today
+    }
 }

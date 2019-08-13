@@ -1,50 +1,50 @@
 <div class='row'>
     <div class='col s12 m8 offset-m2'>
-        <h3>Create a new item</h3>
+        <form id='newitem_upload' enctype='multipart/form-data' action='newitem/upload' method='POST'>
+            <h3>Create a new Item</h3>
 
-        <label>Item Title</label>
-        <input class='input-field' placeholder='Title'>
+            <label>Item Title</label>
+            <input class='input-field' placeholder='Title' name='title'>
 
-        <label>Box ID</label>
-        <input class='input-field' value='{{box.id}}' placeholder='Y05'>
+            <label>Box ID</label>
+            <input class='input-field' value='{{box.id}}' placeholder='Y05' name='box_id'>
 
-        <label>Description</label>
-        <input class='text-area' placeholder='Item Description'>
+            <label>Description</label>
+            <input class='text-area' placeholder='Item Description' name='description'>
 
-        <label>Sale Type</label>
-        <div class='input-field'>
-            <select>
-                <option>Buy it now</option>
-                <option>Auction</option>
-            </select>
-        </div>
+            <label>Sale Type</label>
+            <div class='input-field' name='sale_type'>
+                <select>
+                    <option>Buy it now</option>
+                    <option>Auction</option>
+                </select>
+            </div>
 
-        <label>Make</label>
-        <input class='input-field' placeholder='Apple'>
+            <label>Make</label>
+            <input class='input-field' placeholder='Apple' name='make'>
 
-        <label>Current State</label>
-        <div class='input-field'>
-            <select>
-                <option>Sellable</option>
-                <option>Fixable</option>
-                <option>For parts</option>
-                <option>For own use</option>
-            </select>
-        </div>
+            <label>Current State</label>
+            <div class='input-field' name='current_state'>
+                <select>
+                    <option>Sellable</option>
+                    <option>Fixable</option>
+                    <option>For parts</option>
+                    <option>For own use</option>
+                </select>
+            </div>
 
-        <label>Estimated Price</label>
-        <div>
-            <h5 style='display:inline;'>€</h5>
-            <input style='display:inline; width:20%;' type='number' min='0'>
-            <h5 style='display:inline;'>.</h5>
-            <input style='display:inline; width:20%;' type='number' style='width:20%;' min='0' max='99'>
-        </div>
+            <label>Estimated Price</label>
+            <div>
+                <h5 style='display:inline;'>€</h5>
+                <input style='display:inline; width:20%;' type='number' min='0' step='0.01' name='est_price'>
+            </div>
 
-        <div>
-            <div img-upload method='POST', url='webfreaks.in/dummyservice'></div>
-        </div>
+            <div>
+                <div img-upload method='POST', url='/image/upload'></div>
+            </div>
 
-        <a class='btn right' ng-click='saveData()'>Save</a>
+            <input class='btn right' type='submit' value='Upload' id='btnSubmit' name='submit'>
+        </form>
 
     </div>
 </div>
