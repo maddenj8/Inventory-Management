@@ -55,6 +55,12 @@ app.controller('boxController', function($scope) {
 // -------- FUNCTIONS FOR ITEMS ----------- //
 app.controller('itemController', function($scope, $routeParams) {
     this.id = $routeParams.id
+    document.getElementsByClassName('username')[0].value = sessionStorage.user_name
+    JsBarcode("#barcode", sessionStorage.latest_barcode, {
+        format: "upc",
+        lineColor: "#000",
+        displayValue: true
+    }); 
     $scope.previewData = []
     $scope.has_images = function() {
         console.log($scope.previewData)

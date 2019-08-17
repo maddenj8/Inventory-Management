@@ -3,6 +3,7 @@
         <form id='newitem_upload' enctype='multipart/form-data' action='newitem/upload' method='POST'>
             <h3>Create a new Item</h3>
 
+            <input class='input-field username' name='user_name' style='display:none;'>
             <label>Item Title</label>
             <input class='input-field' placeholder='Title' name='title'>
 
@@ -13,10 +14,10 @@
             <input class='text-area' placeholder='Item Description' name='description'>
 
             <label>Sale Type</label>
-            <div class='input-field' name='sale_type'>
-                <select>
-                    <option>Buy it now</option>
-                    <option>Auction</option>
+            <div>
+                <select name='sale_type'>
+                    <option value='Buy it now'>Buy it now</option>
+                    <option value='Auction'>Auction</option>
                 </select>
             </div>
 
@@ -24,12 +25,12 @@
             <input class='input-field' placeholder='Apple' name='make'>
 
             <label>Current State</label>
-            <div class='input-field' name='current_state'>
-                <select>
-                    <option>Sellable</option>
-                    <option>Fixable</option>
-                    <option>For parts</option>
-                    <option>For own use</option>
+            <div>
+                <select name='current_state'>
+                    <option value='Sellable'>Sellable</option>
+                    <option value='Fixable'>Fixable</option>
+                    <option value='For Parts'>For parts</option>
+                    <option value='For own use'>For own use</option>
                 </select>
             </div>
 
@@ -43,8 +44,11 @@
                 <div img-upload method='POST', url='/image/upload'></div>
             </div>
 
+            <div>
+                <svg id='barcode'></svg>
+            </div>
+
             <input class='btn right' type='submit' value='Upload' id='btnSubmit' name='submit'>
         </form>
-
     </div>
 </div>

@@ -9,15 +9,17 @@
         <link rel="stylesheet" href="/css/index.css">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.0/JsBarcode.all.js'></script>
         <script src="/js/index.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <base href='/'>
-        <title>Inventory Management</title>
+        <title>Sorted!</title>
         
     </head>
     <body ng-app='mainpage'>
         <nav ng-controller='topbar'>
             <div class="nav-wrapper">
-                <a href="/" class="brand-logo">Inventory Management</a>
+                <a href="/" class="brand-logo">Sorted!</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li ng-repeat="item in items"><a href='#'>{{item}}</a></li>
                 </ul>
@@ -26,5 +28,6 @@
         <div ng-controller='viewController'>
             <div class='main' ng-view></div>
         </div>
+        <script src='./js/start.js'></script>
     </body>
 </html>
