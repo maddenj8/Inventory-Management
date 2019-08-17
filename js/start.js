@@ -14,15 +14,9 @@
     }
 
     request('GET', '/latest_barcode', (barcode)=> {
-            sessionStorage.latest_barcode = this.responseText
+            sessionStorage.latest_barcode = barcode
             console.log(barcode)
     })
-
-    request('GET', '/items?user=' + sessionStorage.user_name, (items)=> {
-        console.log(items)
-    })
-
-    // fetch the current barcode value here before ever getting to item page
 })()
 
 function request(method, url, callback) {

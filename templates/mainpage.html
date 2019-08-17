@@ -5,12 +5,12 @@
             <ul class='collapsible popout'>
                 <li ng-repeat='box in boxes'>
                     <div class='collapsible-header' style='justify-content:space-between'>
-                        <p>{{box.code}}</p>
-                        <a class='btn' href='/new-item/{{box.code}}'>+</a>
+                        <p>{{box}}</p>
+                        <a class='btn' href='/new-item/{{box}}'>+</a>
                     </div>
                     <div class='collapsible-body'>
                         <ul class='collection'>
-                            <li class='collection-item' ng-repeat='item in box.items'>
+                            <li class='collection-item' ng-repeat='item in items[box].items'>
                                 <div class='row'>
                                     <div class='col m3'>
                                         {{item.title}}

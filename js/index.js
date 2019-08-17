@@ -30,23 +30,17 @@ app.controller('topbar', function($scope) {
 }) 
 
 // --------- FUNCTIONS FOR BOXES --------- //
-app.controller('boxes', function($scope) {
-    $scope.boxes = [
-        {code: "Y05",
-            items: [
-                {title: "iPhone 6s", est_price: "$250", class:"sellable", make:"Apple", sale_type: "Buy it now"},
-                {title: "iPad Pro", est_price: "$350", class:"For own use", make:"Apple"},
-                {title: "iPhone X", est_price: "$750", class:"Fixable", make:"Apple", sale_type: "Buy it now"},
-            ]
-        },
-        {code: "Y06",
-            items: [
-                {title: "iPhone 6s", est_price: "$250", class:"sellable", make:"Apple", sale_type: "Buy it now"},
-                {title: "iPhone X", est_price: "$750", class:"Fixable", make:"Apple", sale_type: "Buy it now"},
-            ]
-        }
-    ]
-})
+app.controller('boxes', ['$scope', '$http', function($scope, $http) {
+    request('GET', '/items?user=' + sessionStorage.user_name, (boxes)=> {
+        $scope.items = JSON.parse(boxes)
+        console.log($scope.boxes)
+    })
+    request('GET', '/boxes?user=' + sessionStorage.user_name, (items)=> {
+        $scope.boxes = JSON.parse(items)
+        console.log($scope.items)
+        $scope.$applyAsync()
+    })
+}])
 
 app.controller('boxController', function($scope) {
 

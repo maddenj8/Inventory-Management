@@ -8,6 +8,18 @@ app.use(express.static(__dirname))
 app.use(express.json())
 var barcode
 
+/* TODO: 
+ * load the items data and format it during 
+ * server bootup time to ensure faster data 
+ * access
+ */
+
+/* TODO: 
+ * add a secret key to each of the get requests
+ * so that the requests can't simply be accessed
+ * by typing in the url into the browser.
+ */
+
 var connection = sql.createConnection(credentials)
 
 var storage = multer.diskStorage({
@@ -42,9 +54,42 @@ app.get('/latest_barcode', function(req, res) {
 })
 
 app.get('/items', (req, res)=> {
-    console.log(req.query.user)
-    // var query = 
-    res.send('done')
+    var query = 'SELECT * from `inventory-items` WHERE user_id="' + req.query.user + '" ORDER BY box_id'
+    do_query(query, (results)=> {
+        var items = {}
+        var prev_box = ''
+        for (var i = 0; i < results.length; i++) {
+            if (results[i].box_id != prev_box) {
+                prev_box = results[i].box_id
+                items[prev_box] = {
+                    items:[]
+                }
+            }
+            items[prev_box].items.push(results[i])
+        }
+        res.send(JSON.stringify(items))
+    })
+    // res.send('done')
+})
+
+/* TODO:
+ * change the query used by /boxes
+ * so that it fetches from a table of boxes
+ * that pairs the user_id with the box_id
+ * so that regardless of empty of full
+ * they appear on the main page of the 
+ * web app
+ */
+
+app.get('/boxes', (req, res)=> {
+    var query = 'SELECT box_id FROM `inventory-items` WHERE user_id="' + req.query.user + '" GROUP BY box_id'
+    var boxes = []
+    do_query(query, (results)=> {
+        results.forEach((box)=> {
+            boxes.push(box.box_id)
+        })
+        res.send(JSON.stringify(boxes))
+    })
 })
 
 app.post('/newitem/upload', upload.array('images'), function(req, res) {
