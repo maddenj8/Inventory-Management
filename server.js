@@ -25,9 +25,11 @@ var connection = sql.createConnection(credentials)
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         var dir = './uploads/' + req.body.box_id
+        console.log(dir)
         if (!fs.existsSync(dir))
             fs.mkdirSync(dir)
         dir += '/' + barcode
+        console.log(dir)
         if (!fs.existsSync(dir))
             fs.mkdirSync(dir)
         
@@ -82,7 +84,7 @@ app.get('/items', (req, res)=> {
  */
 
 app.get('/boxes', (req, res)=> {
-    var query = 'SELECT box_id FROM `inventory-items` WHERE user_id="' + req.query.user + '" GROUP BY box_id'
+    var query = 'SELECT box_id FROM `inventory-boxes` WHERE user_id="' + req.query.user + '" GROUP BY box_id'
     var boxes = []
     do_query(query, (results)=> {
         results.forEach((box)=> {
@@ -107,6 +109,18 @@ app.post('/newitem/upload', upload.array('images'), function(req, res) {
     barcode++
     barcode = barcode.toString()
 
+    try {
+        res.redirect('/?success=true')
+    } catch(err) {res.send(400)}
+})
+
+app.post('/newbox', upload.none(), (req, res)=> {
+    var query = 'INSERT INTO `inventory-boxes`(user_id, box_id, date_created)' +
+                'VALUES("' + req.body.user_name + '","' +
+                req.body.box_id + '","' +
+                req.body.date_created + '")'
+    console.log(query)
+    do_query(query)
     try {
         res.redirect('/?success=true')
     } catch(err) {res.send(400)}

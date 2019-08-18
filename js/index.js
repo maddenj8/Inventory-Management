@@ -43,7 +43,7 @@ app.controller('boxes', ['$scope', '$http', function($scope, $http) {
 }])
 
 app.controller('boxController', function($scope) {
-
+    document.getElementsByClassName('username')[0].value = sessionStorage.user_name
 })
 
 // -------- FUNCTIONS FOR ITEMS ----------- //

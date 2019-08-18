@@ -1,12 +1,15 @@
-<div>
-    <div class='row'>  
-        <div class='col s12 m8 offset-m2'>
-            <h4 style='margin-bottom:50px;'>Create new Box</h4>
+<div class='row'>  
+    <div class='col s12 m8 offset-m2'>
+        <form id='newbox_upload' action='newbox/' method='POST' enctype='multipart/form-data'>
+            <h3 style='margin-bottom:50px;'>Create new Box</h3>
+            <input class='input-field username' name='user_name' style='display:none;'>
             <label>Box ID</label>
-            <input class='box_id input-field' placeholder='Box ID'/>
+
+            <input class='input-field box_id' name='box_id' placeholder='Box ID'/>
             <br><br>
-            <input type='date' id='date_created'>
-            <a class='btn right' style='margin-top:10px;'>Save</a>
-        </div>
+
+            <input type='date' id='date_created' name='date_created'>
+            <input class='btn right' type='submit' value='Save' name='submit'/>
+        </form>
     </div>
 </div>
