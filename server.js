@@ -71,17 +71,7 @@ app.get('/items', (req, res)=> {
         }
         res.send(JSON.stringify(items))
     })
-    // res.send('done')
 })
-
-/* TODO:
- * change the query used by /boxes
- * so that it fetches from a table of boxes
- * that pairs the user_id with the box_id
- * so that regardless of empty of full
- * they appear on the main page of the 
- * web app
- */
 
 app.get('/boxes', (req, res)=> {
     var query = 'SELECT box_id FROM `inventory-boxes` WHERE user_id="' + req.query.user + '" GROUP BY box_id'

@@ -23,6 +23,9 @@ app.controller('viewController', function($scope) {
         M.AutoInit()
         fill_todays_date()
     })
+    $scope.edit_item = (barcode)=> {
+        console.log(barcode)
+    }
 })
 
 app.controller('topbar', function($scope) {

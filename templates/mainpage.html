@@ -15,15 +15,19 @@
                                     <div class='col m3'>
                                         {{item.title}}
                                     </div>
-                                    <div class='col m3'>
+                                    <div class='col m2'>
                                         Estimated Price: {{item.est_price}}
                                     </div>
-                                    <div class='col m3'>
+                                    <div class='col m2'>
                                         {{item.sale_type}}
                                     </div>
-                                    <div class='col m3'>
+                                    <div class='col m2'>
+                                        <a class='waves-effect waves-light btn' href='#' ng-click='edit_item(item.barcode)'><i class='material-icons'>edit</i></a>
+                                    </div>
+                                    <div class='col m2'>
                                         <a class="waves-effect waves-light btn red" href='#'>Mark as sold</a>
                                     </div>
+
                                 </div>
                             </li>
                         </ul>
