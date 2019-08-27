@@ -1,5 +1,4 @@
 (function() {
-    console.log('this is getting called straight away')
     if (!sessionStorage.user_name) {
         sessionStorage.user_name = 'user_1' // when login is done change this to redirect to login page.
     }
@@ -7,7 +6,6 @@
     var url = new URL(window.location.href)
     var success = url.searchParams.get('success')
 
-    console.log(success)
     if (success != null) {
         if (success == 'true') alert('Upload was sucessful')
         else alert('Upload was unsuccessful, please try again later')

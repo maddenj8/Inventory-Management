@@ -10,10 +10,20 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
         controller: 'itemController',
         controllerAs: 'box'
     })
+    $routeProvider.when('/new-item/', {
+        templateUrl: '/templates/newitem.html',
+        controller: 'itemController',
+        controllerAs: 'box'
+    })
     $routeProvider.when('/new-box/', {
         templateUrl: '/templates/newbox.html',
         controller: 'boxController', 
         controllerAs: 'newBox'
+    })
+    $routeProvider.when('/edit-item/:barcode', {
+        templateUrl: '/templates/edit.html',
+        controller: 'editController',
+        controllerAs: 'item'
     })
     $locationProvider.html5Mode(true)
 }]) 
@@ -23,9 +33,6 @@ app.controller('viewController', function($scope) {
         M.AutoInit()
         fill_todays_date()
     })
-    $scope.edit_item = (barcode)=> {
-        console.log(barcode)
-    }
 })
 
 app.controller('topbar', function($scope) {
@@ -36,11 +43,9 @@ app.controller('topbar', function($scope) {
 app.controller('boxes', ['$scope', '$http', function($scope, $http) {
     request('GET', '/items?user=' + sessionStorage.user_name, (boxes)=> {
         $scope.items = JSON.parse(boxes)
-        console.log($scope.boxes)
     })
     request('GET', '/boxes?user=' + sessionStorage.user_name, (items)=> {
         $scope.boxes = JSON.parse(items)
-        console.log($scope.items)
         $scope.$applyAsync()
     })
 }])
@@ -50,19 +55,34 @@ app.controller('boxController', function($scope) {
 })
 
 // -------- FUNCTIONS FOR ITEMS ----------- //
-app.controller('itemController', function($scope, $routeParams) {
-    this.id = $routeParams.id
+app.controller('itemController', function($scope, $routeParams, $http, $sce, $timeout) {
+    $scope.template_selected = '/templates/forms/default.html'
     document.getElementsByClassName('username')[0].value = sessionStorage.user_name
     JsBarcode("#barcode", sessionStorage.latest_barcode, {
         format: "upc",
         lineColor: "#000",
         displayValue: true
-    }); 
+    });
+    console.log(document.getElementById('box_id'))
     $scope.previewData = []
     $scope.has_images = function() {
         console.log($scope.previewData)
         return true
     }
+    $scope.templates = [
+        {
+            url:'/templates/forms/default.html',
+            name: 'Default'
+        },
+        {
+            url:'/templates/forms/test.html',
+            name: 'Phone'
+        },
+        {
+            url:'/templates/forms/tablet.html',
+            name: 'Tablet'
+        }
+    ]
 })
 
 app.directive('imgUpload', function($http, $compile) {
@@ -147,6 +167,14 @@ app.directive('imgUpload', function($http, $compile) {
     }
 })
 
+app.controller('editController', ['$scope', '$routeParams', function($scope, $routeParams) {
+    console.log($routeParams.barcode)
+    get('/item-details?barcode='+$routeParams.barcode, 'GET', (data)=> {
+        console.log(data)
+    })
+
+}])
+
 function fill_todays_date() {
     var date_selector = document.querySelector('#date_created')
     if (date_selector) {
@@ -158,4 +186,15 @@ function fill_todays_date() {
         console.log(today)
         date_selector.value = today
     }
+}
+
+function get(url, method, callback) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            callback(this.responseText)
+        }
+    }
+    xhttp.open(method, url, true);
+    xhttp.send();
 }

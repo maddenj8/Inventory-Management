@@ -84,6 +84,14 @@ app.get('/boxes', (req, res)=> {
     })
 })
 
+app.get('/item-details', (req, res)=> {
+    var query = 'SELECT * FROM `inventory-items` WHERE barcode=' + req.query.barcode
+    console.log(query)
+    do_query(query, (results)=> {
+        res.send(JSON.stringify(results[0]))
+    })
+})
+
 app.post('/newitem/upload', upload.array('images'), function(req, res) {
     var query = 'INSERT INTO `inventory-items`(user_id, title, box_id, description, sale_type, make, current_state, est_price, barcode) ' +
                 'VALUES ("' + req.body.user_name + '","' +
