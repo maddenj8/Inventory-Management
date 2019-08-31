@@ -24,6 +24,7 @@ var connection = sql.createConnection(credentials)
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
+        console.log('>>>>>>>>>> ' + req.body.box_id)
         var dir = './uploads/' + req.body.box_id
         console.log(dir)
         if (!fs.existsSync(dir))

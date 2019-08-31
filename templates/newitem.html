@@ -3,11 +3,9 @@
         <h3>Create a new Item</h3>
         <form id='newitem_upload' enctype='multipart/form-data' action='newitem/upload' method='POST'>
             <input class='input-field username' name='user_name' style='display:none;'>
-            <select id='template-select' name='template' ng-change='change()' ng-model='template_selected'>
-                <option ng-repeat='template in templates' value='{{template.url}}'>{{template.name}}</option>
+            <select id='template_selection' class='browser-default' ng-model='template_selected' ng-change='change()' ng-options='template.url as template.name for template in templates'>
             </select>
             <ng-include src="template_selected"></ng-include>
-
             <div>
                 <svg id='barcode'></svg>
             </div>

@@ -63,7 +63,6 @@ app.controller('itemController', function($scope, $routeParams, $http, $sce, $ti
         lineColor: "#000",
         displayValue: true
     });
-    console.log(document.getElementById('box_id'))
     $scope.previewData = []
     $scope.has_images = function() {
         console.log($scope.previewData)
@@ -79,10 +78,14 @@ app.controller('itemController', function($scope, $routeParams, $http, $sce, $ti
             name: 'Phone'
         },
         {
-            url:'/templates/forms/tablet.html',
+            url:'/templates/forms/test.html',
             name: 'Tablet'
         }
     ]
+    $scope.change = ()=> {
+        var elems = document.querySelectorAll('select')
+        M.FormSelect.init(elems, {})
+    }
 })
 
 app.directive('imgUpload', function($http, $compile) {
