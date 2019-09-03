@@ -56,6 +56,7 @@ app.controller('boxController', function($scope) {
 
 // -------- FUNCTIONS FOR ITEMS ----------- //
 app.controller('itemController', function($scope, $routeParams, $http, $sce, $timeout) {
+    get('/templates?user_id=' + sessionStorage.user_name, 'GET', (templates)=>{console.log(templates)})
     $scope.template_selected = '/templates/forms/default.html'
     document.getElementsByClassName('username')[0].value = sessionStorage.user_name
     JsBarcode("#barcode", sessionStorage.latest_barcode, {
@@ -86,6 +87,13 @@ app.controller('itemController', function($scope, $routeParams, $http, $sce, $ti
         var elems = document.querySelectorAll('select')
         M.FormSelect.init(elems, {})
     }
+    var interval = setInterval(()=>{
+        var elem = document.getElementById('box_id')
+        if (elem) {
+            clearInterval(interval)
+            elem.value=$routeParams.id
+        }
+    }, 100)
 })
 
 app.directive('imgUpload', function($http, $compile) {

@@ -85,6 +85,17 @@ app.get('/boxes', (req, res)=> {
     })
 })
 
+app.get('/templates', (req, res)=> {
+    var templates = []
+    var query = 'SELECT * FROM `inventory-templates` WHERE user_id="' + req.query.user + '"'
+    do_query(query, (results)=> {
+        results.forEach((result)=> {
+            console.log(result)
+        })
+        res.sendStatus(200)
+    })
+})
+
 app.get('/item-details', (req, res)=> {
     var query = 'SELECT * FROM `inventory-items` WHERE barcode=' + req.query.barcode
     console.log(query)
